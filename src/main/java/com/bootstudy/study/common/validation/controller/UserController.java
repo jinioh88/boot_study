@@ -1,6 +1,7 @@
 package com.bootstudy.study.common.validation.controller;
 
 import com.bootstudy.study.common.User;
+import com.bootstudy.study.common.file.PdfView;
 import com.bootstudy.study.common.mapping.UserService;
 import com.bootstudy.study.common.validation.UserForm;
 import com.bootstudy.study.common.validation.UserFormValidator;
@@ -14,10 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -47,5 +46,13 @@ public class UserController {
         var createduser = userService.create(inputUser);
 
         return "redirect:/users/users/show/" + createduser.getId();
+    }
+
+    @GetMapping(path = "/download/{filename:.+\\.pdf}")
+    public ModelAndView downloadPdf(@PathVariable String filename) {
+        val users = userService.findAll();
+        val view = new PdfView("reports/users.jrxml", users, filename);
+
+        return new ModelAndView(view);
     }
 }
