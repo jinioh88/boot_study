@@ -1,9 +1,15 @@
 package com.bootstudy.study.common.validation.controller;
 
+import com.bootstudy.study.common.User;
+import com.bootstudy.study.common.mapping.UserService;
 import com.bootstudy.study.common.validation.UserForm;
 import com.bootstudy.study.common.validation.UserFormValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import lombok.var;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +27,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 
     private final UserFormValidator userFormValidator;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @InitBinder("userForm")
     public void validatorBinder(WebDataBinder binder) {
@@ -30,10 +39,13 @@ public class UserController {
     @PostMapping("/new")
     public String newUser(@Validated @ModelAttribute("userForm")UserForm form, BindingResult br,
                           RedirectAttributes attributes) {
-        if(br.hasErrors()) {
-            // 오류 흐름 코드
-            return "redirect:/users/new";
-        }
-        return "register";
+        var inputUser = modelMapper.map(form, User.class);
+        val password = form.getPassword();
+
+        inputUser.setPassword(passwordEncoder.encode(password));
+
+        var createduser = userService.create(inputUser);
+
+        return "redirect:/users/users/show/" + createduser.getId();
     }
 }
