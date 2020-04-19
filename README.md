@@ -52,5 +52,6 @@
 - 스프링5 부터 서류 출력의 대표적 라이브러리인 재스퍼리포트가 제외됐다. 
 - org.springframework.Web.servlet.View 인터페이스를 구현하면 범용적인 로직으로 다양한 파일 다운로드에 대응할 수 있다. 
 - CSV 파일은 jackson-dataformat-csv를 사용한다. 
+  - jackson-dataformat-csv의 CsvMapper를 사용해 엔티티를 CSV 파일에 매핑한 후 출력한다. 
   
   
