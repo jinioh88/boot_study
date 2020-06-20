@@ -54,4 +54,11 @@
 - CSV 파일은 jackson-dataformat-csv를 사용한다. 
   - jackson-dataformat-csv의 CsvMapper를 사용해 엔티티를 CSV 파일에 매핑한 후 출력한다. 
   
+---
+## 데이터 액세스
+1. 스타터
+- 보마를 사용하기에 doma-spring-boot-starter가 필요하다. 
+2. 도마 사용법
+- 엔티티, Dao 인터페이스 SQL 템플릿이 필요하다. 
+  
   
